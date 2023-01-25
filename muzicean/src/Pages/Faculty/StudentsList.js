@@ -210,10 +210,7 @@ class StudentsList extends React.Component {
       console.log(global.userinfo.users_id);
     POST(
       SERVER +
-      'api/students.json?name=' +
-      this.ssname +
-      '&status=' +
-        this.sstatus,
+      'api/students.json?name=&status=',
     ).then(response => {
       this.setState({ loading: false });
       if (response.error) {
@@ -228,10 +225,30 @@ class StudentsList extends React.Component {
                   this.state.studentlisting[key].course_status != 'Discontinued' &&
                   this.state.studentlisting[key].teacher_id == global.userinfo.users_id
               ) {
-                  if (this.sstatus != '' && this.sstatus == this.state.studentlisting[key].course_status) { 
-                    this.state.studentlist.push(this.state.studentlisting[key]);
+                  if (this.sstatus != '' && this.ssname != '') {
+                      if (this.sstatus == this.state.studentlisting[key].course_status) {
+                          var crs = this.state.studentlisting[key].course.toLowerCase();
+                          var fnm = this.state.studentlisting[key].firstname.toLowerCase();
+                          var lnm = this.state.studentlisting[key].lastname.toLowerCase();
+                          if (crs.includes(this.ssname) || fnm.includes(this.ssname) || lnm.includes(this.ssname)) {
+                              this.state.studentlist.push(this.state.studentlisting[key]);
+                          }
+                      }
                   }
-                  if (this.sstatus == '') {
+                  if (this.sstatus != '' && this.ssname == '') {
+                      if (this.sstatus == this.state.studentlisting[key].course_status) {
+                          this.state.studentlist.push(this.state.studentlisting[key]);
+                      }
+                  }
+                  if (this.sstatus == '' && this.ssname != '') {
+                      var crs = this.state.studentlisting[key].course.toLowerCase();
+                      var fnm = this.state.studentlisting[key].firstname.toLowerCase();
+                      var lnm = this.state.studentlisting[key].lastname.toLowerCase();
+                      if (crs.includes(this.ssname) || fnm.includes(this.ssname) || lnm.includes(this.ssname)) {
+                          this.state.studentlist.push(this.state.studentlisting[key]);
+                      }
+                  }
+                  if (this.sstatus == '' && this.ssname == '') {
                       this.state.studentlist.push(this.state.studentlisting[key]);
                   }
             }
@@ -242,12 +259,32 @@ class StudentsList extends React.Component {
                 this.state.studentlisting[key].course_status == 'Discontinued' &&
                 this.state.studentlisting[key].teacher_id == global.userinfo.users_id
             ) {
-                if (this.sstatus != '' && this.sstatus == this.state.studentlisting[key].course_status) {
-                    this.state.studentlist.push(this.state.studentlisting[key]);
-                }
-                if (this.sstatus == '') {
-                    this.state.studentlist.push(this.state.studentlisting[key]);
-                }
+                if (this.sstatus != '' && this.ssname != '') {
+                      if (this.sstatus == this.state.studentlisting[key].course_status) {
+                          var crs = this.state.studentlisting[key].course.toLowerCase();
+                          var fnm = this.state.studentlisting[key].firstname.toLowerCase();
+                          var lnm = this.state.studentlisting[key].lastname.toLowerCase();
+                          if (crs.includes(this.ssname) || fnm.includes(this.ssname) || lnm.includes(this.ssname)) {
+                              this.state.studentlist.push(this.state.studentlisting[key]);
+                          }
+                      }
+                  }
+                  if (this.sstatus != '' && this.ssname == '') {
+                      if (this.sstatus == this.state.studentlisting[key].course_status) {
+                          this.state.studentlist.push(this.state.studentlisting[key]);
+                      }
+                  }
+                  if (this.sstatus == '' && this.ssname != '') {
+                      var crs = this.state.studentlisting[key].course.toLowerCase();
+                      var fnm = this.state.studentlisting[key].firstname.toLowerCase();
+                      var lnm = this.state.studentlisting[key].lastname.toLowerCase();
+                      if (crs.includes(this.ssname) || fnm.includes(this.ssname) || lnm.includes(this.ssname)) {
+                          this.state.studentlist.push(this.state.studentlisting[key]);
+                      }
+                  }
+                  if (this.sstatus == '' && this.ssname == '') {
+                      this.state.studentlist.push(this.state.studentlisting[key]);
+                  }
             }
           });
         }
