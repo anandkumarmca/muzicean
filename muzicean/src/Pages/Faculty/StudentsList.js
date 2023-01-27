@@ -11,16 +11,16 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { Dimensions, Linking } from 'react-native';
-import { connect } from 'react-redux';
+import {Dimensions, Linking} from 'react-native';
+import {connect} from 'react-redux';
 
-import { TextInput, Button, Modal } from 'react-native-paper';
+import {TextInput, Button, Modal} from 'react-native-paper';
 import LoginReducer from '../../Redux/Reducer/Login';
 
-import { Card } from 'react-native-paper';
+import {Card} from 'react-native-paper';
 
-import { PROPERTY, POST, SERVER } from '../../Common/Settings';
-import { height, width, STYLES } from '../../Common/Style';
+import {PROPERTY, POST, SERVER} from '../../Common/Settings';
+import {height, width, STYLES} from '../../Common/Style';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Users from '../Component/User';
@@ -52,11 +52,11 @@ class StudentsList extends React.Component {
   ];
 
   Status = [
-    { id: 0, name: 'All' },
-    { id: 1, name: 'Active' },
-    { id: 2, name: 'Inactive' },
-    { id: 3, name: 'Hold' },
-    { id: 4, name: 'Freeze' },
+    {id: 0, name: 'All'},
+    {id: 1, name: 'Active'},
+    {id: 2, name: 'Inactive'},
+    {id: 3, name: 'Hold'},
+    {id: 4, name: 'Freeze'},
   ];
 
   selectDated = new Date().getDate();
@@ -102,12 +102,12 @@ class StudentsList extends React.Component {
     this.state.students_total = null;
     this.state.dataChecked = null;
     POST(SERVER + 'api/students.json').then(response => {
-      this.setState({ loading: false });
+      this.setState({loading: false});
       if (response.error) {
         console.log(response.error);
       } else {
-        console.log(response.students)
-        this.setState({ studentlisting: response.students });
+        console.log(response.students);
+        this.setState({studentlisting: response.students});
 
         if (flag == false) {
           Object.keys(this.state.studentlisting).map(key => {
@@ -150,8 +150,10 @@ class StudentsList extends React.Component {
   checkAll = () => {
     let selected = this.state.selectedStudent;
 
-    if (selected.length == [] || selected.length > 0 && selected.length < this.state.studentlist.length) {
-
+    if (
+      selected.length == [] ||
+      (selected.length > 0 && selected.length < this.state.studentlist.length)
+    ) {
       Object.keys(this.state.studentlist).map(key => {
         selected[key] = Number(key);
       });
@@ -160,9 +162,7 @@ class StudentsList extends React.Component {
         selectedStudent: selected,
         selectedCheck: true,
       });
-
     } else {
-
       if (selected.length != []) {
         this.setState({
           selectedStudent: [],
@@ -170,7 +170,6 @@ class StudentsList extends React.Component {
         });
         return;
       }
-
     }
   };
 
@@ -190,7 +189,7 @@ class StudentsList extends React.Component {
   };
 
   searchApi = () => {
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     this.state.studentlisting = '';
     this.state.studentlist = [];
     this.state.students_total = null;
@@ -207,88 +206,117 @@ class StudentsList extends React.Component {
       this.ssname = '';
     }
 
-      console.log(global.userinfo.users_id);
-    POST(
-      SERVER +
-      'api/students.json?name=&status=',
-    ).then(response => {
-      this.setState({ loading: false });
+    console.log(global.userinfo.users_id);
+    POST(SERVER + 'api/students.json?name=&status=').then(response => {
+      this.setState({loading: false});
       if (response.error) {
         console.log(response.error);
       } else {
-        console.log(response.students)
-        this.setState({ studentlisting: response.students });
-          //code by shreedul START
+        console.log(response.students);
+        this.setState({studentlisting: response.students});
+        //code by shreedul START
         if (this.state.discontinuedCheck == false) {
           Object.keys(this.state.studentlisting).map(key => {
-              if (
-                  this.state.studentlisting[key].course_status != 'Discontinued' &&
-                  this.state.studentlisting[key].teacher_id == global.userinfo.users_id
-              ) {
-                  if (this.sstatus != '' && this.ssname != '') {
-                      if (this.sstatus == this.state.studentlisting[key].course_status) {
-                          var crs = this.state.studentlisting[key].course.toLowerCase();
-                          var fnm = this.state.studentlisting[key].firstname.toLowerCase();
-                          var lnm = this.state.studentlisting[key].lastname.toLowerCase();
-                          if (crs.includes(this.ssname) || fnm.includes(this.ssname) || lnm.includes(this.ssname)) {
-                              this.state.studentlist.push(this.state.studentlisting[key]);
-                          }
-                      }
+            if (
+              this.state.studentlisting[key].course_status != 'Discontinued' &&
+              this.state.studentlisting[key].teacher_id ==
+                global.userinfo.users_id
+            ) {
+              if (this.sstatus != '' && this.ssname != '') {
+                if (
+                  this.sstatus == this.state.studentlisting[key].course_status
+                ) {
+                  var crs = this.state.studentlisting[key].course.toLowerCase();
+                  var fnm =
+                    this.state.studentlisting[key].firstname.toLowerCase();
+                  var lnm =
+                    this.state.studentlisting[key].lastname.toLowerCase();
+                  if (
+                    crs.includes(this.ssname) ||
+                    fnm.includes(this.ssname) ||
+                    lnm.includes(this.ssname)
+                  ) {
+                    this.state.studentlist.push(this.state.studentlisting[key]);
                   }
-                  if (this.sstatus != '' && this.ssname == '') {
-                      if (this.sstatus == this.state.studentlisting[key].course_status) {
-                          this.state.studentlist.push(this.state.studentlisting[key]);
-                      }
-                  }
-                  if (this.sstatus == '' && this.ssname != '') {
-                      var crs = this.state.studentlisting[key].course.toLowerCase();
-                      var fnm = this.state.studentlisting[key].firstname.toLowerCase();
-                      var lnm = this.state.studentlisting[key].lastname.toLowerCase();
-                      if (crs.includes(this.ssname) || fnm.includes(this.ssname) || lnm.includes(this.ssname)) {
-                          this.state.studentlist.push(this.state.studentlisting[key]);
-                      }
-                  }
-                  if (this.sstatus == '' && this.ssname == '') {
-                      this.state.studentlist.push(this.state.studentlisting[key]);
-                  }
+                }
+              }
+              if (this.sstatus != '' && this.ssname == '') {
+                if (
+                  this.sstatus == this.state.studentlisting[key].course_status
+                ) {
+                  this.state.studentlist.push(this.state.studentlisting[key]);
+                }
+              }
+              if (this.sstatus == '' && this.ssname != '') {
+                var crs = this.state.studentlisting[key].course.toLowerCase();
+                var fnm =
+                  this.state.studentlisting[key].firstname.toLowerCase();
+                var lnm = this.state.studentlisting[key].lastname.toLowerCase();
+                if (
+                  crs.includes(this.ssname) ||
+                  fnm.includes(this.ssname) ||
+                  lnm.includes(this.ssname)
+                ) {
+                  this.state.studentlist.push(this.state.studentlisting[key]);
+                }
+              }
+              if (this.sstatus == '' && this.ssname == '') {
+                this.state.studentlist.push(this.state.studentlisting[key]);
+              }
             }
           });
         } else {
           Object.keys(this.state.studentlisting).map(key => {
             if (
-                this.state.studentlisting[key].course_status == 'Discontinued' &&
-                this.state.studentlisting[key].teacher_id == global.userinfo.users_id
+              this.state.studentlisting[key].course_status == 'Discontinued' &&
+              this.state.studentlisting[key].teacher_id ==
+                global.userinfo.users_id
             ) {
-                if (this.sstatus != '' && this.ssname != '') {
-                      if (this.sstatus == this.state.studentlisting[key].course_status) {
-                          var crs = this.state.studentlisting[key].course.toLowerCase();
-                          var fnm = this.state.studentlisting[key].firstname.toLowerCase();
-                          var lnm = this.state.studentlisting[key].lastname.toLowerCase();
-                          if (crs.includes(this.ssname) || fnm.includes(this.ssname) || lnm.includes(this.ssname)) {
-                              this.state.studentlist.push(this.state.studentlisting[key]);
-                          }
-                      }
+              if (this.sstatus != '' && this.ssname != '') {
+                if (
+                  this.sstatus == this.state.studentlisting[key].course_status
+                ) {
+                  var crs = this.state.studentlisting[key].course.toLowerCase();
+                  var fnm =
+                    this.state.studentlisting[key].firstname.toLowerCase();
+                  var lnm =
+                    this.state.studentlisting[key].lastname.toLowerCase();
+                  if (
+                    crs.includes(this.ssname) ||
+                    fnm.includes(this.ssname) ||
+                    lnm.includes(this.ssname)
+                  ) {
+                    this.state.studentlist.push(this.state.studentlisting[key]);
                   }
-                  if (this.sstatus != '' && this.ssname == '') {
-                      if (this.sstatus == this.state.studentlisting[key].course_status) {
-                          this.state.studentlist.push(this.state.studentlisting[key]);
-                      }
-                  }
-                  if (this.sstatus == '' && this.ssname != '') {
-                      var crs = this.state.studentlisting[key].course.toLowerCase();
-                      var fnm = this.state.studentlisting[key].firstname.toLowerCase();
-                      var lnm = this.state.studentlisting[key].lastname.toLowerCase();
-                      if (crs.includes(this.ssname) || fnm.includes(this.ssname) || lnm.includes(this.ssname)) {
-                          this.state.studentlist.push(this.state.studentlisting[key]);
-                      }
-                  }
-                  if (this.sstatus == '' && this.ssname == '') {
-                      this.state.studentlist.push(this.state.studentlisting[key]);
-                  }
+                }
+              }
+              if (this.sstatus != '' && this.ssname == '') {
+                if (
+                  this.sstatus == this.state.studentlisting[key].course_status
+                ) {
+                  this.state.studentlist.push(this.state.studentlisting[key]);
+                }
+              }
+              if (this.sstatus == '' && this.ssname != '') {
+                var crs = this.state.studentlisting[key].course.toLowerCase();
+                var fnm =
+                  this.state.studentlisting[key].firstname.toLowerCase();
+                var lnm = this.state.studentlisting[key].lastname.toLowerCase();
+                if (
+                  crs.includes(this.ssname) ||
+                  fnm.includes(this.ssname) ||
+                  lnm.includes(this.ssname)
+                ) {
+                  this.state.studentlist.push(this.state.studentlisting[key]);
+                }
+              }
+              if (this.sstatus == '' && this.ssname == '') {
+                this.state.studentlist.push(this.state.studentlisting[key]);
+              }
             }
           });
         }
-          //code by shreedul END
+        //code by shreedul END
         if (this.state.studentlist.length == 0) {
           this.dataChecked = false;
         } else {
@@ -315,7 +343,7 @@ class StudentsList extends React.Component {
   };
 
   searchReset = () => {
-    this.setState({ searchBox: false, search_err: false, isLoading: true });
+    this.setState({searchBox: false, search_err: false, isLoading: true});
     this.state.searchName = '';
     this.searchApi();
   };
@@ -331,7 +359,7 @@ class StudentsList extends React.Component {
       } else {
         Linking.openURL(
           'whatsapp://send?phone=' +
-          this.state.studentlist[this.state.selectedStudent[0]].mobile,
+            this.state.studentlist[this.state.selectedStudent[0]].mobile,
         );
       }
     } else {
@@ -350,7 +378,7 @@ class StudentsList extends React.Component {
       } else {
         Linking.openURL(
           'mailto:' +
-          this.state.studentlist[this.state.selectedStudent[0]].email,
+            this.state.studentlist[this.state.selectedStudent[0]].email,
         );
       }
     } else {
@@ -375,10 +403,10 @@ class StudentsList extends React.Component {
         let selected = this.state.selectedStudent;
         selected.forEach(value => {
           if (this.state.studentlist[value].course_status != 'Freeze') {
-            Alert.alert('', 'Unfreeze not allowed!', [{ text: 'OK' }]);
+            Alert.alert('', 'Unfreeze not allowed!', [{text: 'OK'}]);
             return;
           } else if (this.state.studentlist[value].freezeshow == 'none') {
-            Alert.alert('', 'Unfreeze not allowed!', [{ text: 'OK' }]);
+            Alert.alert('', 'Unfreeze not allowed!', [{text: 'OK'}]);
             return;
           } else {
             this.props.navigation.navigate('StatusChange', {
@@ -406,10 +434,10 @@ class StudentsList extends React.Component {
         let selected = this.state.selectedStudent;
         selected.forEach(value => {
           if (this.state.studentlist[value].course_status != 'Hold') {
-            Alert.alert('', 'Unhold not allowed!', [{ text: 'OK' }]);
+            Alert.alert('', 'Unhold not allowed!', [{text: 'OK'}]);
             return;
           } else if (this.state.studentlist[value].holdshow == 'none') {
-            Alert.alert('', 'Unhold not allowed!', [{ text: 'OK' }]);
+            Alert.alert('', 'Unhold not allowed!', [{text: 'OK'}]);
             return;
           } else {
             this.props.navigation.navigate('StatusChange', {
@@ -434,7 +462,7 @@ class StudentsList extends React.Component {
   };
 
   discontinued = () => {
-    this.setState({ isLoading: true });
+    this.setState({isLoading: true});
     if (this.state.discontinuedCheck == false) {
       this.setState({
         discontinuedCheck: true,
@@ -456,11 +484,11 @@ class StudentsList extends React.Component {
     return (
       <KeyboardAvoidingView
         behavior="position"
-        contentContainerStyle={{ height: height - 90 }}>
+        contentContainerStyle={{height: height - 90}}>
         <View
-          style={{ flex: 1, backgroundColor: PROPERTY.headerColorBackground }}
+          style={{flex: 1, backgroundColor: PROPERTY.headerColorBackground}}
           showsVerticalScrollIndicator={false}>
-          <Animatable.View animation="fadeInUpBig" style={{ width: width }}>
+          <Animatable.View animation="fadeInUpBig" style={{width: width}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -473,14 +501,14 @@ class StudentsList extends React.Component {
                 onPress={() => {
                   this.props.navigation.reset({
                     index: 0,
-                    routes: [{ name: 'Faculty' }],
+                    routes: [{name: 'Faculty'}],
                   });
                 }}>
-                <View style={{ paddingLeft: 20, paddingTop: 25 }}>
+                <View style={{paddingLeft: 20, paddingTop: 25}}>
                   <Icon name={'chevron-left'} size={20} />
                 </View>
               </TouchableOpacity>
-              <View style={{ flex: 9, alignItems: 'flex-start' }}></View>
+              <View style={{flex: 9, alignItems: 'flex-start'}}></View>
               <View
                 style={{
                   flex: 91,
@@ -502,8 +530,8 @@ class StudentsList extends React.Component {
           </Animatable.View>
           <Animatable.View
             animation="fadeInUpBig"
-            style={{ width: width, marginTop: 10 }}>
-            <View style={{ backgroundColor: PROPERTY.innerColorBackground }}>
+            style={{width: width, marginTop: 10}}>
+            <View style={{backgroundColor: PROPERTY.innerColorBackground}}>
               <View>
                 <Text
                   style={{
@@ -516,7 +544,7 @@ class StudentsList extends React.Component {
                 <ScrollView
                   showsVerticalScrollIndicator={false}
                   alwaysBounceVertical={false}
-                  contentContainerStyle={{ ...STYLES.scrollViewContainer }}>
+                  contentContainerStyle={{...STYLES.scrollViewContainer}}>
                   <SelectDropdown
                     data={this.Status}
                     defaultValueByIndex={0}
@@ -531,8 +559,8 @@ class StudentsList extends React.Component {
                     rowTextForSelection={(item, index) => {
                       return item.name;
                     }}
-                    buttonStyle={{ ...STYLES.dropdownBtnStyle }}
-                    buttonTextStyle={{ ...STYLES.dropdownBtnTxtStyle }}
+                    buttonStyle={{...STYLES.dropdownBtnStyle}}
+                    buttonTextStyle={{...STYLES.dropdownBtnTxtStyle}}
                     renderDropdownIcon={isOpened => {
                       return (
                         <Icon
@@ -547,8 +575,8 @@ class StudentsList extends React.Component {
                       ...STYLES.dropdownDropdownStyle,
                       marginTop: 0,
                     }}
-                    rowStyle={{ ...STYLES.dropdownRowStyle }}
-                    rowTextStyle={{ ...STYLES.dropdownRowTxtStyle }}
+                    rowStyle={{...STYLES.dropdownRowStyle}}
+                    rowTextStyle={{...STYLES.dropdownRowTxtStyle}}
                   />
                 </ScrollView>
                 <Text
@@ -572,7 +600,7 @@ class StudentsList extends React.Component {
                     backgroundColor: PROPERTY.innerColorBackground,
                   }}
                   onPress={() => {
-                    this.setState({ searchBox: true });
+                    this.setState({searchBox: true});
                   }}>
                   <Text
                     style={{
@@ -590,9 +618,9 @@ class StudentsList extends React.Component {
                     marginTop: 10,
                     marginBottom: 10,
                   }}>
-                  <View style={{ flex: 12 }}>
+                  <View style={{flex: 12}}>
                     <TouchableOpacity
-                      style={{ flex: 10, marginLeft: 20 }}
+                      style={{flex: 10, marginLeft: 20}}
                       onPress={() => {
                         this.discontinued();
                       }}>
@@ -608,7 +636,7 @@ class StudentsList extends React.Component {
                       )}
                     </TouchableOpacity>
                   </View>
-                  <View style={{ flex: 88 }}>
+                  <View style={{flex: 88}}>
                     <Text
                       style={{
                         fontSize: 18,
@@ -629,14 +657,14 @@ class StudentsList extends React.Component {
                   marginTop: 10,
                   borderBottomWidth: 2,
                 }}></View>
-              <View style={{ flexDirection: 'row', marginTop: 25 }}>
-                <View style={{ flex: 34, marginStart: 12 }}>
+              <View style={{flexDirection: 'row', marginTop: 25}}>
+                <View style={{flex: 34, marginStart: 12}}>
                   {!this.state.selectedCheck && (
                     <TouchableOpacity
                       onPress={() => {
                         this.checkAll();
                       }}>
-                      <View style={{ paddingLeft: 8, marginTop: -3 }}>
+                      <View style={{paddingLeft: 8, marginTop: -3}}>
                         <Icon
                           name={'square-o'}
                           size={45}
@@ -650,7 +678,7 @@ class StudentsList extends React.Component {
                       onPress={() => {
                         this.checkAll();
                       }}>
-                      <View style={{ paddingLeft: 8, marginTop: -3 }}>
+                      <View style={{paddingLeft: 8, marginTop: -3}}>
                         <Icon
                           name={'check-square-o'}
                           size={45}
@@ -660,8 +688,8 @@ class StudentsList extends React.Component {
                     </TouchableOpacity>
                   )}
                 </View>
-                <View style={{ flex: 66 }}>
-                  <View style={{ flexDirection: 'row' }}>
+                <View style={{flex: 66}}>
+                  <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity
                       onPress={() => {
                         this.checkUnfreeze();
@@ -672,11 +700,11 @@ class StudentsList extends React.Component {
                           paddingLeft: 7,
                           paddingRight: 7,
                         }}>
-                        <Text style={{ ...STYLES.scheduleBtnText }}>UF</Text>
+                        <Text style={{...STYLES.scheduleBtnText}}>UF</Text>
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{ marginLeft: 3 }}
+                      style={{marginLeft: 3}}
                       onPress={() => {
                         this.checkUnhold();
                       }}>
@@ -686,11 +714,11 @@ class StudentsList extends React.Component {
                           paddingLeft: 7,
                           paddingRight: 7,
                         }}>
-                        <Text style={{ ...STYLES.scheduleBtnText }}>UH</Text>
+                        <Text style={{...STYLES.scheduleBtnText}}>UH</Text>
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{ marginLeft: 3 }}
+                      style={{marginLeft: 3}}
                       onPress={() => {
                         this.whatsappClick();
                       }}>
@@ -704,7 +732,7 @@ class StudentsList extends React.Component {
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{ marginLeft: 3 }}
+                      style={{marginLeft: 3}}
                       onPress={() => {
                         this.mailClick();
                       }}>
@@ -718,7 +746,7 @@ class StudentsList extends React.Component {
                       </View>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{ marginLeft: 3 }}
+                      style={{marginLeft: 3}}
                       onPress={() => {
                         this.messageClick();
                       }}>
@@ -734,7 +762,7 @@ class StudentsList extends React.Component {
                   </View>
                 </View>
               </View>
-              <View style={{ marginTop: 10 }}>
+              <View style={{marginTop: 10}}>
                 <View
                   style={{
                     height: height - 320,
@@ -745,7 +773,7 @@ class StudentsList extends React.Component {
                       <ActivityIndicator
                         size="large"
                         color={PROPERTY.selectedColor}
-                        style={{ marginTop: height - 600 }}
+                        style={{marginTop: height - 600}}
                       />
                     )}
                     {this.state.dataChecked == false && (
@@ -768,57 +796,57 @@ class StudentsList extends React.Component {
                     )}
                     {this.state.dataChecked && (
                       <FlatList
-                        style={{ height: height - 425 }}
+                        style={{height: height - 425}}
                         data={this.state.studentlist}
-                        renderItem={({ item, index }) => (
-                          <View style={{ flexDirection: 'row' }}>
+                        renderItem={({item, index}) => (
+                          <View style={{flexDirection: 'row'}}>
                             {!this.state.selectedStudent.includes(index) && (
                               <TouchableOpacity
-                                style={{ flex: 10, marginLeft: 5, marginTop: 10 }}
+                                style={{flex: 10, marginLeft: 5, marginTop: 10}}
                                 onPress={() => {
                                   this.select(index);
                                 }}>
-                                <View style={{ marginTop: 5 }}>
+                                <View style={{marginTop: 5}}>
                                   <Icon name={'square-o'} size={35} />
                                 </View>
                               </TouchableOpacity>
                             )}
                             {this.state.selectedStudent.includes(index) && (
                               <TouchableOpacity
-                                style={{ flex: 10, marginLeft: 5, marginTop: 10 }}
+                                style={{flex: 10, marginLeft: 5, marginTop: 10}}
                                 onPress={() => {
                                   this.select(index);
                                 }}>
-                                <View style={{ marginTop: 5 }}>
+                                <View style={{marginTop: 5}}>
                                   <Icon name={'check-square-o'} size={35} />
                                 </View>
                               </TouchableOpacity>
                             )}
                             <TouchableOpacity
-                              style={{ flex: 63 }}
+                              style={{flex: 63}}
                               onPress={() => {
                                 this.ShowAttendance(item);
                               }}>
                               <View
                                 style={
                                   item.course_status != 'Freeze' &&
-                                    item.course_status != 'Discontinued' &&
-                                    item.course_status != 'Hold'
+                                  item.course_status != 'Discontinued' &&
+                                  item.course_status != 'Hold'
                                     ? {
-                                      marginBottom: 10,
-                                      padding: 10,
-                                      borderRadius: 10,
-                                      marginHorizontal: 10,
-                                      backgroundColor:
-                                        PROPERTY.calendarHeaderBackground,
-                                    }
+                                        marginBottom: 10,
+                                        padding: 10,
+                                        borderRadius: 10,
+                                        marginHorizontal: 10,
+                                        backgroundColor:
+                                          PROPERTY.calendarHeaderBackground,
+                                      }
                                     : {
-                                      marginBottom: 10,
-                                      padding: 10,
-                                      borderRadius: 10,
-                                      marginHorizontal: 10,
-                                      backgroundColor: PROPERTY.redColor,
-                                    }
+                                        marginBottom: 10,
+                                        padding: 10,
+                                        borderRadius: 10,
+                                        marginHorizontal: 10,
+                                        backgroundColor: PROPERTY.redColor,
+                                      }
                                 }>
                                 {item.course_status != 'Freeze' &&
                                   item.course_status != 'Discontinued' &&
@@ -831,7 +859,7 @@ class StudentsList extends React.Component {
                                         }}>
                                         {item.firstname} {item.lastname}
                                       </Text>
-                                      <Text style={{ fontSize: 14 }}>
+                                      <Text style={{fontSize: 14}}>
                                         {item.levelName} - {item.centre}
                                       </Text>
                                     </View>
@@ -845,7 +873,7 @@ class StudentsList extends React.Component {
                                       }}>
                                       {item.firstname} {item.lastname}
                                     </Text>
-                                    <Text style={{ fontSize: 14 }}>
+                                    <Text style={{fontSize: 14}}>
                                       {item.levelName} - {item.centre}
                                     </Text>
                                   </View>
@@ -859,7 +887,7 @@ class StudentsList extends React.Component {
                                       }}>
                                       {item.firstname} {item.lastname}
                                     </Text>
-                                    <Text style={{ fontSize: 14 }}>
+                                    <Text style={{fontSize: 14}}>
                                       {item.levelName} - {item.centre}
                                     </Text>
                                   </View>
@@ -873,40 +901,40 @@ class StudentsList extends React.Component {
                                       }}>
                                       {item.firstname} {item.lastname}
                                     </Text>
-                                    <Text style={{ fontSize: 14 }}>
+                                    <Text style={{fontSize: 14}}>
                                       {item.levelName} - {item.centre}
                                     </Text>
                                   </View>
                                 )}
                               </View>
                             </TouchableOpacity>
-                            <View style={{ flex: 37 }}>
+                            <View style={{flex: 37}}>
                               <View
                                 style={
                                   item.course_status != 'Freeze' &&
-                                    item.course_status != 'Discontinued' &&
-                                    item.course_status != 'Hold'
+                                  item.course_status != 'Discontinued' &&
+                                  item.course_status != 'Hold'
                                     ? {
-                                      marginBottom: 10,
-                                      padding: 10,
-                                      paddingTop: 15,
-                                      paddingBottom: 15,
-                                      marginTop: 5,
-                                      borderRadius: 10,
-                                      marginHorizontal: 10,
-                                      backgroundColor:
-                                        PROPERTY.calendarHeaderBackground,
-                                    }
+                                        marginBottom: 10,
+                                        padding: 10,
+                                        paddingTop: 15,
+                                        paddingBottom: 15,
+                                        marginTop: 5,
+                                        borderRadius: 10,
+                                        marginHorizontal: 10,
+                                        backgroundColor:
+                                          PROPERTY.calendarHeaderBackground,
+                                      }
                                     : {
-                                      marginBottom: 10,
-                                      padding: 10,
-                                      paddingTop: 15,
-                                      paddingBottom: 15,
-                                      marginTop: 5,
-                                      borderRadius: 10,
-                                      marginHorizontal: 10,
-                                      backgroundColor: PROPERTY.redColor,
-                                    }
+                                        marginBottom: 10,
+                                        padding: 10,
+                                        paddingTop: 15,
+                                        paddingBottom: 15,
+                                        marginTop: 5,
+                                        borderRadius: 10,
+                                        marginHorizontal: 10,
+                                        backgroundColor: PROPERTY.redColor,
+                                      }
                                 }>
                                 <Text
                                   style={{
@@ -938,7 +966,7 @@ class StudentsList extends React.Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({ searchBox: false, search_err: false });
+                this.setState({searchBox: false, search_err: false});
               }}>
               <Image
                 source={require('../../Assets/icons/close.png')}
@@ -963,41 +991,41 @@ class StudentsList extends React.Component {
                 mode="outlined"
                 ref={ref => (this.form.search_name = ref)}
                 defaultValue={this.state.searchName}
-                style={{ height: 35, marginLeft: 20, marginRight: 20 }}
+                style={{height: 35, marginLeft: 20, marginRight: 20}}
                 theme={STYLES.inputStyle}
               />
               {this.state.search_err && (
-                <Text style={{ color: PROPERTY.overdueColor, paddingLeft: 23 }}>
+                <Text style={{color: PROPERTY.overdueColor, paddingLeft: 23}}>
                   This field should not be empty..
                 </Text>
               )}
             </View>
-            <View style={{ flexDirection: 'row', marginTop: -22 }}>
-              <View style={{ flex: 10 }}></View>
-              <View style={{ flex: 38 }}>
+            <View style={{flexDirection: 'row', marginTop: -22}}>
+              <View style={{flex: 10}}></View>
+              <View style={{flex: 38}}>
                 <Button
                   color={PROPERTY.buttonColor}
                   mode="contained"
-                  style={{ ...STYLES.button, height: 40, paddingTop: 0 }}
+                  style={{...STYLES.button, height: 40, paddingTop: 0}}
                   onPress={() => {
                     this.searchReset();
                   }}>
                   Reset
                 </Button>
               </View>
-              <View style={{ flex: 6 }}></View>
-              <View style={{ flex: 38 }}>
+              <View style={{flex: 6}}></View>
+              <View style={{flex: 38}}>
                 <Button
                   color={PROPERTY.buttonColor}
                   mode="contained"
-                  style={{ ...STYLES.button, height: 40, paddingTop: 0 }}
+                  style={{...STYLES.button, height: 40, paddingTop: 0}}
                   onPress={() => {
                     this.searchFilter();
                   }}>
                   Search
                 </Button>
               </View>
-              <View style={{ flex: 10 }}></View>
+              <View style={{flex: 10}}></View>
             </View>
           </Modal>
         </View>
