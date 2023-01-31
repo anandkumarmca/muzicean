@@ -539,7 +539,7 @@ class FacultyScheduleDetails extends React.Component {
     if (this.state.selectedClass.length > 1) {
       Alert.alert(
         '',
-        'You can select only one atudent at a time for Unfreeze!',
+        'You can select only one student at a time for Unfreeze!',
         [{text: 'OK'}],
       );
       return;
@@ -557,7 +557,7 @@ class FacultyScheduleDetails extends React.Component {
   }
   checkUnhold() {
     if (this.state.selectedClass.length > 1) {
-      Alert.alert('', 'You can select only one atudent at a time for Unhold!', [
+      Alert.alert('', 'You can select only one student at a time for Unhold!', [
         {text: 'OK'},
       ]);
       return;
@@ -1555,16 +1555,18 @@ class FacultyScheduleDetails extends React.Component {
                                   P
                                 </Text>
                               )}
-                              {item.sstatus === 'FA' && (
-                                <Text
-                                  style={{
-                                    textAlign: 'center',
-                                    fontWeight: 'bold',
-                                    fontSize: 18,
-                                  }}>
-                                  FA
-                                </Text>
-                              )}
+                              {item.sstatus === 'FA' &&
+                                item.deleted !=
+                                  1(
+                                    <Text
+                                      style={{
+                                        textAlign: 'center',
+                                        fontWeight: 'bold',
+                                        fontSize: 18,
+                                      }}>
+                                      FA
+                                    </Text>,
+                                  )}
                               {item.sstatus === 'absent' && item.deleted != 1 && (
                                 <Text
                                   style={{
@@ -1605,16 +1607,18 @@ class FacultyScheduleDetails extends React.Component {
                                   OF
                                 </Text>
                               )}
-                              {item.sstatus === 'cancelled' && (
-                                <Text
-                                  style={{
-                                    textAlign: 'center',
-                                    fontWeight: 'bold',
-                                    fontSize: 18,
-                                  }}>
-                                  C
-                                </Text>
-                              )}
+                              {item.sstatus === 'cancelled' &&
+                                item.deleted !=
+                                  1(
+                                    <Text
+                                      style={{
+                                        textAlign: 'center',
+                                        fontWeight: 'bold',
+                                        fontSize: 18,
+                                      }}>
+                                      C
+                                    </Text>,
+                                  )}
                               {item.sstatus === '' && (
                                 <Text
                                   style={{

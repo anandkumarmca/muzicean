@@ -353,7 +353,7 @@ class StudentsList extends React.Component {
       if (this.state.selectedStudent.length > 1) {
         Alert.alert(
           'Whatsapp Alert',
-          'You can select only one atudent at a time for sending a message!',
+          'You can select only one student at a time for sending a message!',
         );
         return;
       } else {
@@ -372,7 +372,7 @@ class StudentsList extends React.Component {
       if (this.state.selectedStudent.length > 1) {
         Alert.alert(
           'Mail Alert',
-          'You can select only one atudent at a time for sending a mail!',
+          'You can select only one student at a time for sending a mail!',
         );
         return;
       } else {
@@ -395,7 +395,7 @@ class StudentsList extends React.Component {
       if (this.state.selectedStudent.length > 1) {
         Alert.alert(
           'Unfreeze Alert',
-          'You can select only one atudent at a time for Unfreeze!',
+          'You can select only one student at a time for Unfreeze!',
         );
         return;
       } else {
@@ -426,7 +426,7 @@ class StudentsList extends React.Component {
       if (this.state.selectedStudent.length > 1) {
         Alert.alert(
           'Unhold Alert',
-          'You can select only one atudent at a time for Unhold!',
+          'You can select only one student at a time for Unhold!',
         );
         return;
       } else {
