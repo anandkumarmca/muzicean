@@ -193,19 +193,20 @@ class StudentsList extends React.Component {
     this.state.studentlisting = '';
     this.state.studentlist = [];
     this.state.students_total = null;
-    this.state.dataChecked = null;
+      this.state.dataChecked = null;
+    //code updated by shreedul START
     if (this.state.selectStatusName != 'All') {
-      this.sstatus = this.state.selectStatusName;
+        this.sstatus = this.state.selectStatusName.toLowerCase();
     } else {
       this.sstatus = '';
     }
 
     if (this.state.searchName != '') {
-      this.ssname = this.state.searchName;
+        this.ssname = this.state.searchName.toLowerCase();
     } else {
       this.ssname = '';
     }
-
+    //code updated by shreedul END
     console.log(global.userinfo.users_id);
     POST(SERVER + 'api/students.json?name=&status=').then(response => {
       this.setState({loading: false});
