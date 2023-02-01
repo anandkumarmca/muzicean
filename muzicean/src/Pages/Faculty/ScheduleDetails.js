@@ -1555,18 +1555,16 @@ class FacultyScheduleDetails extends React.Component {
                                   P
                                 </Text>
                               )}
-                              {item.sstatus === 'FA' &&
-                                item.deleted !=
-                                  1(
-                                    <Text
-                                      style={{
-                                        textAlign: 'center',
-                                        fontWeight: 'bold',
-                                        fontSize: 18,
-                                      }}>
-                                      FA
-                                    </Text>,
-                                  )}
+                              {item.sstatus === 'FA' && item.deleted != 1 && (
+                                <Text
+                                  style={{
+                                    textAlign: 'center',
+                                    fontWeight: 'bold',
+                                    fontSize: 18,
+                                  }}>
+                                  FA
+                                </Text>
+                              )}
                               {item.sstatus === 'absent' && item.deleted != 1 && (
                                 <Text
                                   style={{
@@ -1608,17 +1606,16 @@ class FacultyScheduleDetails extends React.Component {
                                 </Text>
                               )}
                               {item.sstatus === 'cancelled' &&
-                                item.deleted !=
-                                  1(
-                                    <Text
-                                      style={{
-                                        textAlign: 'center',
-                                        fontWeight: 'bold',
-                                        fontSize: 18,
-                                      }}>
-                                      C
-                                    </Text>,
-                                  )}
+                                item.deleted != 1 && (
+                                  <Text
+                                    style={{
+                                      textAlign: 'center',
+                                      fontWeight: 'bold',
+                                      fontSize: 18,
+                                    }}>
+                                    C
+                                  </Text>
+                                )}
                               {item.sstatus === '' && (
                                 <Text
                                   style={{
