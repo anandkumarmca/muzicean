@@ -196,7 +196,7 @@ class StudentsList extends React.Component {
       this.state.dataChecked = null;
     //code updated by shreedul START
     if (this.state.selectStatusName != 'All') {
-        this.sstatus = this.state.selectStatusName.toLowerCase();
+        this.sstatus = this.state.selectStatusName;
     } else {
       this.sstatus = '';
     }
