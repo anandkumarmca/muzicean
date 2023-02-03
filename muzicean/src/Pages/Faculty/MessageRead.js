@@ -2,12 +2,9 @@ import React from 'react';
 import { View, Image, Text, ScrollView, KeyboardAvoidingView, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { Dimensions, Linking } from "react-native";
 import { connect } from 'react-redux';
-
 import { TextInput, Button, Modal } from 'react-native-paper';
 import LoginReducer from '../../Redux/Reducer/Login';
-
 import { Card } from 'react-native-paper';
-
 import { PROPERTY, POST, SERVER } from '../../Common/Settings';
 import { height, width, STYLES } from '../../Common/Style';
 import * as Animatable from 'react-native-animatable';
@@ -16,13 +13,9 @@ import Users from '../Component/User'
 import moment from 'moment';
 import SelectDropdown from 'react-native-select-dropdown';
 import BottomDrawer from '../Component/Drawer';
-
-
 class MessageRead extends React.Component {
-
     scrollRef = null;
     currentMonth = 0;
-
     month = [
         'January',
         'February',
@@ -37,15 +30,12 @@ class MessageRead extends React.Component {
         'November',
         'December',
     ];
-
     selectDated = new Date().getDate();
-
     maininfo = {
         month: this.month[new Date().getMonth()],
         year: new Date().getYear() + 1900,
         date: this.selectDated,
     }
-
     constructor(props) {
         super(props);
         this.maininfo.total = new Date(this.maininfo.year, new Date().getMonth(), 0).getDate();
@@ -60,14 +50,11 @@ class MessageRead extends React.Component {
             msg: '',
         };
     }
-
     componentDidMount() {
-
         // console.log(this.props.route.params.data);
         this.id = this.props.route.params.data.messages_id;
         this.uid = this.props.route.params.data.users_id;
         this.stype = this.props.route.params.data.sendtype;
-
         POST(SERVER + 'messages/getAllRead.json?id=' + this.id + '&users_id=' + this.uid + '&sendtype=' + this.stype, {
             permission: 'faculty'
         }).then(response => {
@@ -76,7 +63,6 @@ class MessageRead extends React.Component {
             } else {
                 console.log(response.form);
                 this.setState({ readlist: response.form });
-
                 this.setState({
                     isLoading: false,
                     fname: this.state.readlist.firstname + " " + this.state.readlist.lastname,
@@ -88,14 +74,29 @@ class MessageRead extends React.Component {
             }
         });
     }
-
-
+    btnstyle() {
+        if (global.userinfo.users_id != this.state.readlist.users_id) {
+            return {
+                position: 'absolute',
+                width: 50,
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                right: 30,
+                bottom: 30,
+            }
+        }
+        else {
+            return {
+                display: 'none',
+            }
+        }
+    }
     /**
      * called to display page
      * @returns 
      */
     render() {
-
         return (
             <KeyboardAvoidingView behavior="position" contentContainerStyle={{ height: height - 90 }}>
                 <View style={{ flex: 1, backgroundColor: PROPERTY.headerColorBackground, marginBottom: -70 }} showsVerticalScrollIndicator={false}>
@@ -177,7 +178,7 @@ class MessageRead extends React.Component {
                                         data: this.props.route.params.data,
                                     });
                                 }}
-                                style={styles.touchableOpacityStyle}>
+                                    style={this.btnstyle()}>
                                 <Image
                                     style={{
                                         resizeMode: 'contain',
@@ -196,20 +197,14 @@ class MessageRead extends React.Component {
                 </View>
                 <BottomDrawer {...this.props}></BottomDrawer>
             </KeyboardAvoidingView>)
-
     }
-
 }
-
 const mapstate = (state) => {
     return {
         login: LoginReducer
     };
 };
-
-
 export default connect(mapstate)(MessageRead);
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
