@@ -205,7 +205,8 @@ class FacultyMessage extends React.Component {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
-              this.props.navigation.navigate('MessageWrite');
+               alert("Functionality not yet available");
+               //this.props.navigation.navigate('MessageWrite');
             }}
             style={styles.touchableOpacityStyle}>
             <Image
